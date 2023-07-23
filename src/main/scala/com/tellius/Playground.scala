@@ -58,6 +58,8 @@ object Playground extends App with SprayJsonSupport {
       case CreateUser(user) =>
         try {
           userService.createUser(user)
+          println("Updating user")
+
           sender() ! UserCreated(user)
         } catch {
           case e: Exception => sender() ! FailedUpdated(e.getMessage)
@@ -87,6 +89,7 @@ object Playground extends App with SprayJsonSupport {
   private val userDBActor: ActorRef = system.actorOf(Props[UserDBActor], "UserDBActor")
 
   def validateCredentials(username: String, password: String): Boolean = {
+    println("Updating user")
 
     userService.validateCredentials(username, password)
 
@@ -111,6 +114,8 @@ object Playground extends App with SprayJsonSupport {
           if (isValid) {
             val token = createUserToken(username)
             respondWithHeader(RawHeader("Acccess-Token", token)) {
+              println("Updating user")
+
               complete(StatusCodes.OK)
             }
           } else {
@@ -130,6 +135,8 @@ object Playground extends App with SprayJsonSupport {
       case Success(claim) =>
         val exp: Long = claim.expiration.getOrElse(0)
         val current: Long = System.currentTimeMillis() / 1000
+        println("Updating user")
+
         current > exp
       case Failure(value) =>
         true

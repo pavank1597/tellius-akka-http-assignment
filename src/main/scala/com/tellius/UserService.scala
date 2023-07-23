@@ -23,11 +23,12 @@ class UserService {
   }
 
   def updateUser(uid: Int, user: Users): Boolean = {
-
+    println("Updating user")
     val users = findUser(uid)
     if (users == null) throw new Exception("user not found")
     if (!isValidatePassword(user)) throw new CustomPasswordException("Password did not match the constraints ")
 
+    println("Updating user")
 
     val sql = "UPDATE Users set name = ?  ,starttime = ? , password = ?  where id = ? "
     val statement = connection.prepareStatement(sql)
@@ -38,6 +39,8 @@ class UserService {
     statement.setString(3, user.password)
     statement.setInt(4, uid)
     // Execute the statement
+    println("Updating user")
+
     statement.executeUpdate
     true
 
@@ -45,10 +48,12 @@ class UserService {
 
   private def isValidatePassword(user: Users) = {
     val passwordRegex = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=]).{8,}$".r
+    println("Updating user")
 
     val validPassword = user.password match {
       case passwordRegex() => true
       case _ => false
+
     }
     validPassword
   }
@@ -59,6 +64,8 @@ class UserService {
 
     val sql = "select * from users"
     val statement = connection.prepareStatement(sql)
+    println("Updating user")
+
 
     // Execute the statement
     val resultSet: ResultSet = statement.executeQuery()
@@ -71,6 +78,8 @@ class UserService {
       val startTime = resultSet.getString("starttime")
       users = Users(id, name, startTime, password) :: users
     }
+    println("Updating user")
+
     users
   }
 
@@ -79,6 +88,7 @@ class UserService {
     var user: Users = null
     val sql = "select * from Users where id = ? "
     val statement = connection.prepareStatement(sql)
+    println("Updating user")
 
     // Set the parameter values
     statement.setInt(1, uid)
@@ -92,6 +102,8 @@ class UserService {
       val email = resultSet.getString("password")
       val startTime = resultSet.getString("starttime")
       user = Users(id, name, email, startTime)
+      println("Updating user")
+
     }
     user
   }
@@ -127,6 +139,7 @@ class UserService {
 
     val sql = "select * from Users where name = ? and password = ? "
     val statement = connection.prepareStatement(sql)
+    println("Updating user")
 
     // Set the parameter values
     statement.setString(1, username)
