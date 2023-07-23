@@ -157,6 +157,7 @@ object Playground extends App with SprayJsonSupport {
 
   def validateCredentials(username: String, password: String): Boolean = {
     println("Updating user")
+    println("Updating pavan user")
 
     userService.validateCredentials(username, password)
 
@@ -181,6 +182,7 @@ object Playground extends App with SprayJsonSupport {
 
           val isValid = validateCredentials(username, password)
           if (isValid) {
+            println("Updating pavan user")
             val token = createUserToken(username)
             respondWithHeader(RawHeader("Acccess-Token", token)) {
 
@@ -212,6 +214,8 @@ object Playground extends App with SprayJsonSupport {
 
     JwtSprayJson.decode(token, jwtSecret, Seq(algorithm)) match {
       case Success(claim) =>
+        println("Updating pavan user")
+
         val exp: Long = claim.expiration.getOrElse(0)
         val current: Long = System.currentTimeMillis() / 1000
         println("Updating user")
@@ -233,19 +237,24 @@ object Playground extends App with SprayJsonSupport {
 
   val resourceRoute = get {
     path(IntNumber) { uid =>
+      println("Updating pavan user")
+
       complete((userDBActor ? FindUser(uid)).mapTo[Users])
     } ~
 
 
       parameter("uid".as[Int]) { uid =>
+        println("Updating pavan user")
+
         complete((userDBActor ? FindUser(uid)).mapTo[Users])
       } ~ pathEndOrSingleSlash {
+      println("Updating pavan user")
 
       complete((userDBActor ? FindAllUsers).mapTo[List[Users]])
     }
   } ~ post {
     entity(as[Users]) { user =>
-//      complete((userDBActor ? CreateUser(user)).mapTo[UserCreated].map(_.user))
+      //      complete((userDBActor ? CreateUser(user)).mapTo[UserCreated].map(_.user))
       val createdFuture = userDBActor ? CreateUser(user)
       onComplete(createdFuture) {
         case Success(result: UserCreated) => complete(result.user)
@@ -275,5 +284,5 @@ object Playground extends App with SprayJsonSupport {
 
 
 
-  val bindingFuture = Http().bindAndHandle(route, "localhost", 8087)
+  val bindingFuture = Http().bindAndHandle(route, "localhost", 8089)
 }
