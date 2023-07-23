@@ -78,10 +78,10 @@ object Playground extends App with SprayJsonSupport {
 
           println("Updating new user")
           userService.createUser(user)
-          println("Updating user")
-          println("Updating user")
-          println("Updating user")
-          println("Updating user")
+          println("Updating old user")
+          println("Updating old user")
+          println("Updating old user")
+          println("Updating old user")
           println("Updating new user")
           println("Updating new user")
           println("Updating new user")
@@ -140,7 +140,7 @@ object Playground extends App with SprayJsonSupport {
   private val userDBActor: ActorRef = system.actorOf(Props[UserDBActor], "UserDBActor")
 
   def validateCredentials(username: String, password: String): Boolean = {
-    println("Updating user")
+    println("Updating old user")
 
     userService.validateCredentials(username, password)
 
@@ -170,7 +170,7 @@ object Playground extends App with SprayJsonSupport {
 
 
               println("Updating new user")
-              println("Updating user");
+              println("Updating old user");
               println("Updating new user")
               println("Updating new user")
 
@@ -196,7 +196,7 @@ object Playground extends App with SprayJsonSupport {
       case Success(claim) =>
         val exp: Long = claim.expiration.getOrElse(0)
         val current: Long = System.currentTimeMillis() / 1000
-        println("Updating user")
+        println("Updating old user")
 
         println("Updating new user")
 

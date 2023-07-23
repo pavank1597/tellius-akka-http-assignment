@@ -24,12 +24,12 @@ class UserService {
   }
 
   def updateUser(uid: Int, user: Users): Boolean = {
-    println("Updating user")
+    println("Updating old user")
     val users = findUser(uid)
     if (users == null) throw new Exception("user not found")
     if (!isValidatePassword(user)) throw new CustomPasswordException("Password did not match the constraints ")
 
-    println("Updating user")
+    println("Updating old user")
 
     val sql = "UPDATE Users set name = ?  ,starttime = ? , password = ?  where id = ? "
     val statement = connection.prepareStatement(sql)
@@ -40,7 +40,7 @@ class UserService {
     statement.setString(3, user.password)
     statement.setInt(4, uid)
     // Execute the statement
-    println("Updating user")
+    println("Updating old user")
 
     statement.executeUpdate
     true
@@ -49,7 +49,7 @@ class UserService {
 
   private def isValidatePassword(user: Users) = {
     val passwordRegex = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=]).{8,}$".r
-    println("Updating user")
+    println("Updating old user")
 
     val validPassword = user.password match {
       case passwordRegex() => true
@@ -65,7 +65,7 @@ class UserService {
 
     val sql = "select * from users"
     val statement = connection.prepareStatement(sql)
-    println("Updating user")
+    println("Updating old user")
 
 
     // Execute the statement
@@ -79,7 +79,7 @@ class UserService {
       val startTime = resultSet.getString("starttime")
       users = Users(id, name, startTime, password) :: users
     }
-    println("Updating user")
+    println("Updating old user")
 
     users
   }
@@ -93,7 +93,7 @@ class UserService {
 
     val statement = connection.prepareStatement(sql)
 
-    println("Updating user")
+    println("Updating old user")
 
 
 
@@ -124,7 +124,7 @@ class UserService {
 
       user = Users(id, name, email, startTime)
 
-      println("Updating user")
+      println("Updating old user")
 
     }
     user
@@ -173,28 +173,28 @@ class UserService {
 
     val statement = connection.prepareStatement(sql)
 
-    println("Updating user")
+    println("Updating old user")
 
 
-    println("Updating user")
+    println("Updating old user")
 
-    println("Updating user")
+    println("Updating old user")
 
-    println("Updating user")
+    println("Updating old user")
 
-    println("Updating user")
+    println("Updating old user")
 
-    println("Updating user")
+    println("Updating old user")
 
-    println("Updating user")
+    println("Updating old user")
 
-    println("Updating user")
+    println("Updating old user")
 
-    println("Updating user")
+    println("Updating old user")
 
-    println("Updating user")
+    println("Updating old user")
 
-    println("Updating user")
+    println("Updating old user")
 
 
     // Set the parameter values
