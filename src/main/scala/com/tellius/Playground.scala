@@ -264,10 +264,15 @@ object Playground extends App with SprayJsonSupport {
   }
 
   val authorizationRoute = pathPrefix("api" / "user") {
+
     optionalHeaderValueByName("Authorization") {
+
       case Some(token) if isTokenExpired(token) => complete(StatusCodes.Unauthorized, "Authorization token expired")
+
       case Some(token) if isTokenValid(token) => resourceRoute
+
       case _ => complete(HttpResponse(status = StatusCodes.Unauthorized, entity = "token is not valid"))
+
     }
   }
 
