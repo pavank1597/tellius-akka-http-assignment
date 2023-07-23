@@ -2,16 +2,25 @@ package com.tellius
 
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 import akka.http.scaladsl.Http
+
+
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.server.Directives._
+
+
 import akka.pattern.ask
 import akka.stream.ActorMaterializer
 import akka.util.Timeout
 import pdi.jwt.{JwtAlgorithm, JwtClaim, JwtSprayJson}
+
+
 import spray.json.DefaultJsonProtocol
 import java.util.concurrent.TimeUnit
+
+
+
 import scala.concurrent.duration.DurationInt
 import scala.util._
 
@@ -19,6 +28,8 @@ case class Users(id: Int, name: String, startTime: String, password: String)
 
 object UserJsonProcaler extends DefaultJsonProtocol {
   case class LoginRequest(username: String, password: String)
+
+
 
   implicit val userJsonProcaler = jsonFormat4(Users)
   implicit val loginJsonProcaler = jsonFormat2(LoginRequest)
@@ -35,11 +46,19 @@ object Playground extends App with SprayJsonSupport {
   case object UserDBActor {
     case class CreateUser(user: Users)
 
+
+
+
+
+
+
     case class UserCreated(user: Users)
 
     case class UserUpdated(user: Users)
 
     case class FailedUpdated(message: String)
+
+
 
     case class UpdateUser(uid: Int, user: Users)
 
@@ -57,10 +76,27 @@ object Playground extends App with SprayJsonSupport {
     override def receive: Receive = {
       case CreateUser(user) =>
         try {
-          println("Updating pavan user")
+          println("Updating new user")
+          println("Updating new user")
+          println("Updating new user")
+          println("Updating new user")
+          println("Updating new user")
+          println("Updating new user")
+
+
+
+
+          println("Updating new user")
           userService.createUser(user)
           println("Updating user")
-          println("Updating pavan user")
+          println("Updating user")
+          println("Updating user")
+          println("Updating user")
+          println("Updating new user")
+          println("Updating new user")
+          println("Updating new user")
+          println("Updating new user")
+          println("Updating new user")
 
 
           sender() ! UserCreated(user)
@@ -68,23 +104,40 @@ object Playground extends App with SprayJsonSupport {
           case e: Exception => sender() ! FailedUpdated(e.getMessage)
         }
       case FindUser(uid: Int) =>
-        println("Updating pavan user")
+        println("Updating new user")
+        println("Updating new user")
+        println("Updating new user")
+        println("Updating new user")
+
+
+
+
+
+
+        println("Updating new user")
 
         val user: Users = userService.findUser(uid)
         sender() ! user
       case FindAllUsers =>
-        println("Updating pavan user")
+        println("Updating new user")
+        println("Updating new user")
+        println("Updating new user")
+        println("Updating new user")
+        println("Updating new user")
+        println("Updating new user")
 
         val users: List[Users] = userService.findAllUsers()
         sender() ! users
       case UpdateUser(uid: Int, user: Users) =>
         try {
-          println("Updating pavan user")
+          println("Updating new user")
+          println("Updating new user")
+          println("Updating new user")
+          println("Updating new user")
+          println("Updating new user")
 
           sender() ! userService.updateUser(uid, user)
         } catch {
-          println("Updating pavan user")
-
           case e: Exception => sender() ! FailedUpdated(e.getMessage)
         }
     }
@@ -94,6 +147,9 @@ object Playground extends App with SprayJsonSupport {
 
   implicit val system = ActorSystem("AkkaHttpPlayground")
   implicit val materializer = ActorMaterializer()
+
+
+
 
   import system.dispatcher
 
@@ -121,16 +177,19 @@ object Playground extends App with SprayJsonSupport {
     post {
       (path("login") & entity(as[LoginRequest])) {
         case LoginRequest(username, password) =>
-          println("Updating pavan user")
+          println("Updating new user")
 
           val isValid = validateCredentials(username, password)
           if (isValid) {
             val token = createUserToken(username)
             respondWithHeader(RawHeader("Acccess-Token", token)) {
 
-              println("Updating pavan user")
-              println("Updating user");    println("Updating pavan user")
-              println("Updating pavan user")
+
+
+
+              println("Updating new user")
+              println("Updating user");    println("Updating new user")
+              println("Updating new user")
 
 
               complete(StatusCodes.OK)
@@ -148,13 +207,16 @@ object Playground extends App with SprayJsonSupport {
   }
 
   def isTokenExpired(token: String): Boolean = {
+
+
+
     JwtSprayJson.decode(token, jwtSecret, Seq(algorithm)) match {
       case Success(claim) =>
         val exp: Long = claim.expiration.getOrElse(0)
         val current: Long = System.currentTimeMillis() / 1000
         println("Updating user")
 
-        println("Updating pavan user")
+        println("Updating new user")
 
         current > exp
       case Failure(value) =>
@@ -173,6 +235,8 @@ object Playground extends App with SprayJsonSupport {
     path(IntNumber) { uid =>
       complete((userDBActor ? FindUser(uid)).mapTo[Users])
     } ~
+
+
       parameter("uid".as[Int]) { uid =>
         complete((userDBActor ? FindUser(uid)).mapTo[Users])
       } ~ pathEndOrSingleSlash {
@@ -208,6 +272,8 @@ object Playground extends App with SprayJsonSupport {
   }
 
   val route = authenticationRoute ~ authorizationRoute
+
+
 
   val bindingFuture = Http().bindAndHandle(route, "localhost", 8087)
 }
