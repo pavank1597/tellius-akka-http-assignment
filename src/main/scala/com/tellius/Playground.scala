@@ -87,6 +87,7 @@ object Playground extends App with SprayJsonSupport {
   private val userDBActor: ActorRef = system.actorOf(Props[UserDBActor], "UserDBActor")
 
   def validateCredentials(username: String, password: String): Boolean = {
+    println("Updating pavan user")
 
     userService.validateCredentials(username, password)
 
@@ -109,6 +110,7 @@ object Playground extends App with SprayJsonSupport {
         case LoginRequest(username, password) =>
           val isValid = validateCredentials(username, password)
           if (isValid) {
+            println("Updating pavan user")
             val token = createUserToken(username)
             respondWithHeader(RawHeader("Acccess-Token", token)) {
               complete(StatusCodes.OK)
@@ -128,6 +130,8 @@ object Playground extends App with SprayJsonSupport {
   def isTokenExpired(token: String): Boolean = {
     JwtSprayJson.decode(token, jwtSecret, Seq(algorithm)) match {
       case Success(claim) =>
+        println("Updating pavan user")
+
         val exp: Long = claim.expiration.getOrElse(0)
         val current: Long = System.currentTimeMillis() / 1000
         current > exp
@@ -145,11 +149,16 @@ object Playground extends App with SprayJsonSupport {
 
   val resourceRoute = get {
     path(IntNumber) { uid =>
+      println("Updating pavan user")
+
       complete((userDBActor ? FindUser(uid)).mapTo[Users])
     } ~
       parameter("uid".as[Int]) { uid =>
+        println("Updating pavan user")
+
         complete((userDBActor ? FindUser(uid)).mapTo[Users])
       } ~ pathEndOrSingleSlash {
+      println("Updating pavan user")
 
       complete((userDBActor ? FindAllUsers).mapTo[List[Users]])
     }
