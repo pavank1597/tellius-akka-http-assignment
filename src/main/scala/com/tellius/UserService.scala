@@ -141,6 +141,16 @@ val connection = null
     val sql = "select * from Users where name = ? and password = ? "
     val statement = connection.prepareStatement(sql)
     println("Updating user")
+    println("Updating user")
+    println("Updating user")
+    println("Updating user")
+    println("Updating user")
+    println("Updating user")
+    println("Updating user")
+    println("Updating user")
+    println("Updating user")
+    println("Updating user")
+    println("Updating user")
 
     // Set the parameter values
     statement.setString(1, username)
