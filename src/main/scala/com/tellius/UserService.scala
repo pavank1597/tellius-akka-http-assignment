@@ -13,13 +13,13 @@ class UserService {
   }
 
   def getConnection(): Connection = {
-    val url = "jdbc:postgresql://localhost:5432/testingpavan"
-    val username = "pavankumar"
-    val password = "Root@123"
+    val url = "jdbc:postgresql://34.28.140.21:5432/postgres"
+    val username = "postgres"
+    val password = "Tellius@123#"
     Class.forName("org.postgresql.Driver")
-
     // Create the database connection
-    DriverManager.getConnection(url, username, password)
+    val connection = DriverManager.getConnection(url, username, password)
+    return  connection
   }
 
   def updateUser(uid: Int, user: Users): Boolean = {
@@ -102,6 +102,13 @@ class UserService {
     if (users != null) throw new Exception("userId Already Exist ")
     if (!isValidatePassword(user)) throw new CustomPasswordException("Password did not match the constraints ")
 
+    execute(user)
+
+
+  }
+
+
+  private def execute(user: Users): Unit = {
     val sql = "INSERT INTO Users (id, name, starttime, password) VALUES (?, ?, ?, ?)"
     val statement = connection.prepareStatement(sql)
 
@@ -113,10 +120,7 @@ class UserService {
 
     // Execute the statement
     statement.executeUpdate
-
-
   }
-
 
   def validateCredentials(username: String, password: String): Boolean = {
 
