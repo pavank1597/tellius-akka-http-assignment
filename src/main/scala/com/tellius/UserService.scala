@@ -13,12 +13,13 @@ class UserService {
   }
 
   def getConnection(): Connection = {
-    val url = "jdbc:postgresql://34.28.140.21:5432/postgres"
-    val username = "postgres"
-    val password = "Tellius@123#"
-    Class.forName("org.postgresql.Driver")
+//    val url = "jdbc:postgresql://34.28.140.21:5432/postgres"
+//    val username = "postgres"
+//    val password = "Tellius@123#"
+//    Class.forName("org.postgresql.Driver")
     // Create the database connection
-    val connection = DriverManager.getConnection(url, username, password)
+//    val connection = DriverManager.getConnection(url, username, password)
+val connection = null
     return  connection
   }
 
