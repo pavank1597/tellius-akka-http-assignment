@@ -74,6 +74,12 @@ object Playground extends App with SprayJsonSupport {
           println("Updating new user")
           println("Updating new user")
           println("Updating new user")
+          println("ConnectionLevel")
+          println("ConnectionLevel")
+          println("ConnectionLevel")
+          println("ConnectionLevel")
+          println("ConnectionLevel")
+          println("ConnectionLevel")
 
 
           println("Updating new user")
@@ -87,6 +93,12 @@ object Playground extends App with SprayJsonSupport {
           println("Updating new user")
           println("Updating new user")
           println("Updating new user")
+          println("ConnectionLevel")
+          println("ConnectionLevel")
+          println("ConnectionLevel")
+          println("ConnectionLevel")
+          println("ConnectionLevel")
+          println("ConnectionLevel")
 
 
           sender() ! UserCreated(user)
@@ -98,6 +110,13 @@ object Playground extends App with SprayJsonSupport {
         println("Updating new user")
         println("Updating new user")
         println("Updating new user")
+        println("ConnectionLevel")
+        println("ConnectionLevel")
+        println("ConnectionLevel")
+        println("ConnectionLevel")
+        println("ConnectionLevel")
+        println("ConnectionLevel")
+
 
 
         println("Updating new user")
@@ -108,6 +127,13 @@ object Playground extends App with SprayJsonSupport {
         println("Updating new user")
         println("Updating new user")
         println("Updating new user")
+
+        println("ConnectionLevel")
+        println("ConnectionLevel")
+        println("ConnectionLevel")
+        println("ConnectionLevel")
+        println("ConnectionLevel")
+        println("ConnectionLevel")
         println("Updating new user")
         println("Updating new user")
         println("Updating new user")
@@ -141,6 +167,12 @@ object Playground extends App with SprayJsonSupport {
 
   def validateCredentials(username: String, password: String): Boolean = {
     println("Updating old user")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
 
     userService.validateCredentials(username, password)
 
@@ -170,6 +202,12 @@ object Playground extends App with SprayJsonSupport {
 
 
               println("Updating new user")
+              println("ConnectionLevel")
+              println("ConnectionLevel")
+              println("ConnectionLevel")
+              println("ConnectionLevel")
+              println("ConnectionLevel")
+              println("ConnectionLevel")
               println("Updating old user");
               println("Updating new user")
               println("Updating new user")
@@ -196,9 +234,12 @@ object Playground extends App with SprayJsonSupport {
       case Success(claim) =>
         val exp: Long = claim.expiration.getOrElse(0)
         val current: Long = System.currentTimeMillis() / 1000
-        println("Updating old user")
 
-        println("Updating new user")
+        println("ConnectionLevel")
+        println("ConnectionLevel")
+        println("ConnectionLevel")
+        println("ConnectionLevel")
+        println("ConnectionLevel")
 
         current > exp
       case Failure(value) =>
@@ -222,7 +263,12 @@ object Playground extends App with SprayJsonSupport {
     parameter("uid".as[Int]) { uid =>
       complete((userDBActor ? FindUser(uid)).mapTo[Users])
     } ~ pathEndOrSingleSlash {
-
+      println("ConnectionLevel")
+      println("ConnectionLevel")
+      println("ConnectionLevel")
+      println("ConnectionLevel")
+      println("ConnectionLevel")
+      println("ConnectionLevel")
       complete((userDBActor ? FindAllUsers).mapTo[List[Users]])
     }
   } ~ post {
@@ -237,6 +283,12 @@ object Playground extends App with SprayJsonSupport {
   } ~ patch {
     (parameter('uid.as[Int]) & entity(as[Users])) { (uid, user) =>
       val eventualBooleanFuture = (userDBActor ? UpdateUser(uid, user))
+      println("ConnectionLevel")
+      println("ConnectionLevel")
+      println("ConnectionLevel")
+      println("ConnectionLevel")
+      println("ConnectionLevel")
+      println("ConnectionLevel")
       onComplete(eventualBooleanFuture) {
 
         case Success(result: Boolean) => if (result) complete("Used updated successfully") else complete(StatusCodes.BadRequest, "User id not found")
@@ -246,6 +298,12 @@ object Playground extends App with SprayJsonSupport {
   }
 
   val authorizationRoute = pathPrefix("api" / "user") {
+    println("ConnectionLevel")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
     optionalHeaderValueByName("Authorization") {
       case Some(token) if isTokenExpired(token) => complete(StatusCodes.Unauthorized, "Authorization token expired")
       case Some(token) if isTokenValid(token) => resourceRoute

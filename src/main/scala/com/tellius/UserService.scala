@@ -181,6 +181,12 @@ class UserService {
     println("Updating old user")
 
     println("Updating old user")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
 
     println("Updating old user")
 
@@ -193,7 +199,12 @@ class UserService {
     println("Updating old user")
 
     println("Updating old user")
-
+    println("ConnectionLevel")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
+    println("ConnectionLevel")
     println("Updating old user")
 
 
