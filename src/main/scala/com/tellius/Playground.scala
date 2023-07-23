@@ -232,13 +232,19 @@ object Playground extends App with SprayJsonSupport {
 
 
   val resourceRoute = get {
+
     path(IntNumber) { uid =>
+
       complete((userDBActor ? FindUser(uid)).mapTo[Users])
+
     } ~
 
 
+
       parameter("uid".as[Int]) { uid =>
+
         complete((userDBActor ? FindUser(uid)).mapTo[Users])
+
       } ~ pathEndOrSingleSlash {
 
       complete((userDBActor ? FindAllUsers).mapTo[List[Users]])
@@ -246,32 +252,47 @@ object Playground extends App with SprayJsonSupport {
   } ~ post {
     entity(as[Users]) { user =>
 //      complete((userDBActor ? CreateUser(user)).mapTo[UserCreated].map(_.user))
+
       val createdFuture = userDBActor ? CreateUser(user)
+
       onComplete(createdFuture) {
+
         case Success(result: UserCreated) => complete(result.user)
+
         case Success(result: FailedUpdated) => complete(StatusCodes.BadRequest, result.message)
+
       }
     }
   } ~ patch {
     (parameter('uid.as[Int]) & entity(as[Users])) { (uid, user) =>
+
       val eventualBooleanFuture = (userDBActor ? UpdateUser(uid, user))
+
       onComplete(eventualBooleanFuture) {
 
         case Success(result: Boolean) => if (result) complete("Used updated successfully") else complete(StatusCodes.BadRequest, "User id not found")
+
         case Success(result: FailedUpdated) => complete(StatusCodes.BadRequest, result.message)
+
       }
+
     }
   }
 
   val authorizationRoute = pathPrefix("api" / "user") {
 
+
     optionalHeaderValueByName("Authorization") {
+
 
       case Some(token) if isTokenExpired(token) => complete(StatusCodes.Unauthorized, "Authorization token expired")
 
+
       case Some(token) if isTokenValid(token) => resourceRoute
 
+
       case _ => complete(HttpResponse(status = StatusCodes.Unauthorized, entity = "token is not valid"))
+
 
     }
   }
