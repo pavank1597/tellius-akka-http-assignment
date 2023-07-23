@@ -20,7 +20,9 @@ libraryDependencies ++= Seq(
   "com.pauldijou" %% "jwt-spray-json" % "2.1.0",
   "org.scalatest" %% "scalatest" % scalaTestVersion,
   "com.typesafe.akka" %% "akka-persistence-jdbc" % "3.5.3",
-  "com.typesafe.akka" %% "akka-stream-alpakka-jdbc" % "3.0.1"
+  "com.typesafe.akka" %% "akka-stream-alpakka-jdbc" % "3.0.1",
+  "org.postgresql" % "postgresql" % "42.6.0"
+
 
 
 

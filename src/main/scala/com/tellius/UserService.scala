@@ -13,21 +13,23 @@ class UserService {
   }
 
   def getConnection(): Connection = {
-    val url = "jdbc:postgresql://localhost:5432/testingpavan"
-    val username = "pavankumar"
-    val password = "Root@123"
-    Class.forName("org.postgresql.Driver")
-
+//    val url = "jdbc:postgresql://34.28.140.21:5432/postgres"
+//    val username = "postgres"
+//    val password = "Tellius@123#"
+//    Class.forName("org.postgresql.Driver")
     // Create the database connection
-    DriverManager.getConnection(url, username, password)
+//    val connection = DriverManager.getConnection(url, username, password)
+val connection = null
+    return  connection
   }
 
   def updateUser(uid: Int, user: Users): Boolean = {
-
+    println("Updating user")
     val users = findUser(uid)
     if (users == null) throw new Exception("user not found")
     if (!isValidatePassword(user)) throw new CustomPasswordException("Password did not match the constraints ")
 
+    println("Updating user")
 
     val sql = "UPDATE Users set name = ?  ,starttime = ? , password = ?  where id = ? "
     val statement = connection.prepareStatement(sql)
@@ -38,6 +40,8 @@ class UserService {
     statement.setString(3, user.password)
     statement.setInt(4, uid)
     // Execute the statement
+    println("Updating user")
+
     statement.executeUpdate
     true
 
@@ -45,10 +49,12 @@ class UserService {
 
   private def isValidatePassword(user: Users) = {
     val passwordRegex = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=]).{8,}$".r
+    println("Updating user")
 
     val validPassword = user.password match {
       case passwordRegex() => true
       case _ => false
+
     }
     validPassword
   }
@@ -59,6 +65,8 @@ class UserService {
 
     val sql = "select * from users"
     val statement = connection.prepareStatement(sql)
+    println("Updating user")
+
 
     // Execute the statement
     val resultSet: ResultSet = statement.executeQuery()
@@ -71,6 +79,8 @@ class UserService {
       val startTime = resultSet.getString("starttime")
       users = Users(id, name, startTime, password) :: users
     }
+    println("Updating user")
+
     users
   }
 
@@ -79,6 +89,7 @@ class UserService {
     var user: Users = null
     val sql = "select * from Users where id = ? "
     val statement = connection.prepareStatement(sql)
+    println("Updating user")
 
     // Set the parameter values
     statement.setInt(1, uid)
@@ -92,6 +103,8 @@ class UserService {
       val email = resultSet.getString("password")
       val startTime = resultSet.getString("starttime")
       user = Users(id, name, email, startTime)
+      println("Updating user")
+
     }
     user
   }
@@ -102,6 +115,13 @@ class UserService {
     if (users != null) throw new Exception("userId Already Exist ")
     if (!isValidatePassword(user)) throw new CustomPasswordException("Password did not match the constraints ")
 
+    execute(user)
+
+
+  }
+
+
+  private def execute(user: Users): Unit = {
     val sql = "INSERT INTO Users (id, name, starttime, password) VALUES (?, ?, ?, ?)"
     val statement = connection.prepareStatement(sql)
 
@@ -113,16 +133,14 @@ class UserService {
 
     // Execute the statement
     statement.executeUpdate
-
-
   }
-
 
   def validateCredentials(username: String, password: String): Boolean = {
 
 
     val sql = "select * from Users where name = ? and password = ? "
     val statement = connection.prepareStatement(sql)
+    println("Updating user")
 
     // Set the parameter values
     statement.setString(1, username)
