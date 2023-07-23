@@ -13,14 +13,14 @@ class UserService {
   }
 
   def getConnection(): Connection = {
-//    val url = "jdbc:postgresql://34.28.140.21:5432/postgres"
-//    val username = "postgres"
-//    val password = "Tellius@123#"
-//    Class.forName("org.postgresql.Driver")
+    //    val url = "jdbc:postgresql://34.28.140.21:5432/postgres"
+    //    val username = "postgres"
+    //    val password = "Tellius@123#"
+    //    Class.forName("org.postgresql.Driver")
     // Create the database connection
-//    val connection = DriverManager.getConnection(url, username, password)
-val connection = null
-    return  connection
+    //    val connection = DriverManager.getConnection(url, username, password)
+    val connection = null
+    return connection
   }
 
   def updateUser(uid: Int, user: Users): Boolean = {
@@ -109,17 +109,13 @@ val connection = null
     val resultSet: ResultSet = statement.executeQuery()
 
 
-
     while (resultSet.next) {
-
 
 
       val id = resultSet.getInt("id")
 
 
-
       val name = resultSet.getString("name")
-
 
 
       val email = resultSet.getString("password")
