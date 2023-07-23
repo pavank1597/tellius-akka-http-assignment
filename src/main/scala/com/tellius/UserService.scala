@@ -19,7 +19,7 @@ class UserService {
     Class.forName("org.postgresql.Driver")
     // Create the database connection
     val connection = DriverManager.getConnection(url, username, password)
-    return  connection
+    return connection
   }
 
   def updateUser(uid: Int, user: Users): Boolean = {
@@ -123,15 +123,11 @@ class UserService {
   }
 
   def validateCredentials(username: String, password: String): Boolean = {
-
-
     val sql = "select * from Users where name = ? and password = ? "
     val statement = connection.prepareStatement(sql)
-
     // Set the parameter values
     statement.setString(1, username)
     statement.setString(2, password)
-
     // Execute the statement
     val resultSet: ResultSet = statement.executeQuery()
     resultSet.next()

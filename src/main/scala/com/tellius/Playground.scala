@@ -155,7 +155,7 @@ object Playground extends App with SprayJsonSupport {
     }
   } ~ post {
     entity(as[Users]) { user =>
-//      complete((userDBActor ? CreateUser(user)).mapTo[UserCreated].map(_.user))
+      //      complete((userDBActor ? CreateUser(user)).mapTo[UserCreated].map(_.user))
       val createdFuture = userDBActor ? CreateUser(user)
       onComplete(createdFuture) {
         case Success(result: UserCreated) => complete(result.user)
@@ -182,5 +182,5 @@ object Playground extends App with SprayJsonSupport {
 
   val route = authenticationRoute ~ authorizationRoute
 
-  val bindingFuture = Http().bindAndHandle(route, "localhost", 8087)
+  val bindingFuture = Http().bindAndHandle(route, "localhost", 8089)
 }
