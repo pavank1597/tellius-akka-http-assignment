@@ -20,7 +20,6 @@ import spray.json.DefaultJsonProtocol
 import java.util.concurrent.TimeUnit
 
 
-
 import scala.concurrent.duration.DurationInt
 import scala.util._
 
@@ -28,7 +27,6 @@ case class Users(id: Int, name: String, startTime: String, password: String)
 
 object UserJsonProcaler extends DefaultJsonProtocol {
   case class LoginRequest(username: String, password: String)
-
 
 
   implicit val userJsonProcaler = jsonFormat4(Users)
@@ -47,17 +45,11 @@ object Playground extends App with SprayJsonSupport {
     case class CreateUser(user: Users)
 
 
-
-
-
-
-
     case class UserCreated(user: Users)
 
     case class UserUpdated(user: Users)
 
     case class FailedUpdated(message: String)
-
 
 
     case class UpdateUser(uid: Int, user: Users)
@@ -84,8 +76,6 @@ object Playground extends App with SprayJsonSupport {
           println("Updating new user")
 
 
-
-
           println("Updating new user")
           userService.createUser(user)
           println("Updating user")
@@ -108,10 +98,6 @@ object Playground extends App with SprayJsonSupport {
         println("Updating new user")
         println("Updating new user")
         println("Updating new user")
-
-
-
-
 
 
         println("Updating new user")
@@ -149,8 +135,6 @@ object Playground extends App with SprayJsonSupport {
   implicit val materializer = ActorMaterializer()
 
 
-
-
   import system.dispatcher
 
   private val userDBActor: ActorRef = system.actorOf(Props[UserDBActor], "UserDBActor")
@@ -185,10 +169,9 @@ object Playground extends App with SprayJsonSupport {
             respondWithHeader(RawHeader("Acccess-Token", token)) {
 
 
-
-
               println("Updating new user")
-              println("Updating user");    println("Updating new user")
+              println("Updating user");
+              println("Updating new user")
               println("Updating new user")
 
 
@@ -207,7 +190,6 @@ object Playground extends App with SprayJsonSupport {
   }
 
   def isTokenExpired(token: String): Boolean = {
-
 
 
     JwtSprayJson.decode(token, jwtSecret, Seq(algorithm)) match {
@@ -237,15 +219,15 @@ object Playground extends App with SprayJsonSupport {
     } ~
 
 
-      parameter("uid".as[Int]) { uid =>
-        complete((userDBActor ? FindUser(uid)).mapTo[Users])
-      } ~ pathEndOrSingleSlash {
+    parameter("uid".as[Int]) { uid =>
+      complete((userDBActor ? FindUser(uid)).mapTo[Users])
+    } ~ pathEndOrSingleSlash {
 
       complete((userDBActor ? FindAllUsers).mapTo[List[Users]])
     }
   } ~ post {
     entity(as[Users]) { user =>
-//      complete((userDBActor ? CreateUser(user)).mapTo[UserCreated].map(_.user))
+      //      complete((userDBActor ? CreateUser(user)).mapTo[UserCreated].map(_.user))
       val createdFuture = userDBActor ? CreateUser(user)
       onComplete(createdFuture) {
         case Success(result: UserCreated) => complete(result.user)
@@ -272,13 +254,7 @@ object Playground extends App with SprayJsonSupport {
   }
 
 
-
-
-
-
-
   val route = authenticationRoute ~ authorizationRoute
-
 
 
   val bindingFuture = Http().bindAndHandle(route, "localhost", 8087)
