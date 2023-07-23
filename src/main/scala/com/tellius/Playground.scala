@@ -57,23 +57,34 @@ object Playground extends App with SprayJsonSupport {
     override def receive: Receive = {
       case CreateUser(user) =>
         try {
+          println("Updating pavan user")
           userService.createUser(user)
           println("Updating user")
+          println("Updating pavan user")
+
 
           sender() ! UserCreated(user)
         } catch {
           case e: Exception => sender() ! FailedUpdated(e.getMessage)
         }
       case FindUser(uid: Int) =>
+        println("Updating pavan user")
+
         val user: Users = userService.findUser(uid)
         sender() ! user
       case FindAllUsers =>
+        println("Updating pavan user")
+
         val users: List[Users] = userService.findAllUsers()
         sender() ! users
       case UpdateUser(uid: Int, user: Users) =>
         try {
+          println("Updating pavan user")
+
           sender() ! userService.updateUser(uid, user)
         } catch {
+          println("Updating pavan user")
+
           case e: Exception => sender() ! FailedUpdated(e.getMessage)
         }
     }
@@ -110,11 +121,17 @@ object Playground extends App with SprayJsonSupport {
     post {
       (path("login") & entity(as[LoginRequest])) {
         case LoginRequest(username, password) =>
+          println("Updating pavan user")
+
           val isValid = validateCredentials(username, password)
           if (isValid) {
             val token = createUserToken(username)
             respondWithHeader(RawHeader("Acccess-Token", token)) {
-              println("Updating user")
+
+              println("Updating pavan user")
+              println("Updating user");    println("Updating pavan user")
+              println("Updating pavan user")
+
 
               complete(StatusCodes.OK)
             }
@@ -136,6 +153,8 @@ object Playground extends App with SprayJsonSupport {
         val exp: Long = claim.expiration.getOrElse(0)
         val current: Long = System.currentTimeMillis() / 1000
         println("Updating user")
+
+        println("Updating pavan user")
 
         current > exp
       case Failure(value) =>
@@ -173,6 +192,7 @@ object Playground extends App with SprayJsonSupport {
     (parameter('uid.as[Int]) & entity(as[Users])) { (uid, user) =>
       val eventualBooleanFuture = (userDBActor ? UpdateUser(uid, user))
       onComplete(eventualBooleanFuture) {
+
         case Success(result: Boolean) => if (result) complete("Used updated successfully") else complete(StatusCodes.BadRequest, "User id not found")
         case Success(result: FailedUpdated) => complete(StatusCodes.BadRequest, result.message)
       }
